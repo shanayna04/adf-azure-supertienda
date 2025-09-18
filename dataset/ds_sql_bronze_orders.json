@@ -1,0 +1,68 @@
+{
+	"name": "ds_sql_bronze_orders",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_supertienda_bronze",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "BRONZE"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "OrderID",
+				"type": "varchar"
+			},
+			{
+				"name": "ProductID",
+				"type": "varchar"
+			},
+			{
+				"name": "CustomerID",
+				"type": "varchar"
+			},
+			{
+				"name": "SalesPersonID",
+				"type": "varchar"
+			},
+			{
+				"name": "OrderDate",
+				"type": "varchar"
+			},
+			{
+				"name": "ShipDate",
+				"type": "varchar"
+			},
+			{
+				"name": "OrderStatus",
+				"type": "varchar"
+			},
+			{
+				"name": "ShipAddress",
+				"type": "varchar"
+			},
+			{
+				"name": "BillAddress",
+				"type": "varchar"
+			},
+			{
+				"name": "Quantity",
+				"type": "varchar"
+			},
+			{
+				"name": "Sales",
+				"type": "varchar"
+			},
+			{
+				"name": "CreationTime",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Orders"
+		}
+	}
+}

@@ -1,0 +1,74 @@
+{
+	"name": "ds_sql_silver_orders",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_supertienda_silver",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SILVER"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "OrderID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ProductID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SalesPersonID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OrderDate",
+				"type": "date"
+			},
+			{
+				"name": "ShipDate",
+				"type": "date"
+			},
+			{
+				"name": "OrderStatus",
+				"type": "varchar"
+			},
+			{
+				"name": "ShipAddress",
+				"type": "varchar"
+			},
+			{
+				"name": "BillAddress",
+				"type": "varchar"
+			},
+			{
+				"name": "Quantity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sales",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CreationTime",
+				"type": "timestamp"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Orders"
+		}
+	}
+}

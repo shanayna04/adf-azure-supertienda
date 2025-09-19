@@ -1,0 +1,87 @@
+{
+	"name": "df_bronze_orders",
+	"properties": {
+		"folder": {
+			"name": "Bronze"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Orders_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_sql_bronze_orders",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          OrderID as string,",
+				"          ProductID as string,",
+				"          CustomerID as string,",
+				"          SalesPersonID as string,",
+				"          OrderDate as string,",
+				"          ShipDate as string,",
+				"          OrderStatus as string,",
+				"          ShipAddress as string,",
+				"          BillAddress as string,",
+				"          Quantity as string,",
+				"          Sales as string,",
+				"          CreationTime as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          OrderID as string,",
+				"          ProductID as string,",
+				"          CustomerID as string,",
+				"          SalesPersonID as string,",
+				"          OrderDate as string,",
+				"          ShipDate as string,",
+				"          OrderStatus as string,",
+				"          ShipAddress as string,",
+				"          BillAddress as string,",
+				"          Quantity as string,",
+				"          Sales as string,",
+				"          CreationTime as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          OrderID,",
+				"          ProductID,",
+				"          CustomerID,",
+				"          SalesPersonID,",
+				"          OrderDate,",
+				"          ShipDate,",
+				"          OrderStatus,",
+				"          ShipAddress,",
+				"          BillAddress,",
+				"          Quantity,",
+				"          Sales,",
+				"          CreationTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

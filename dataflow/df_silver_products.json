@@ -1,15 +1,15 @@
 {
-	"name": "df_bronze_products",
+	"name": "df_silver_products",
 	"properties": {
 		"folder": {
-			"name": "Bronze"
+			"name": "Silver"
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Products_csv",
+						"referenceName": "ds_sql_bronze_products",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -18,13 +18,17 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_sql_bronze_products",
+						"referenceName": "ds_sql_silver_products",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "cast1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          ProductID as string,",
@@ -34,20 +38,24 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 sink(allowSchemaDrift: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 cast(output(",
+				"          ProductID as string",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
-				"          ProductID as string,",
+				"          ProductID as integer,",
 				"          Product as string,",
 				"          Category as string,",
-				"          Price as string",
+				"          Price as integer",
 				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     truncate:true,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",

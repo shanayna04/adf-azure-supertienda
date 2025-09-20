@@ -1,0 +1,109 @@
+{
+	"name": "df_silver_orders",
+	"properties": {
+		"folder": {
+			"name": "Silver"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_sql_bronze_orders",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_sql_silver_orders",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "cast2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          OrderID as string,",
+				"          ProductID as string,",
+				"          CustomerID as string,",
+				"          SalesPersonID as string,",
+				"          OrderDate as string,",
+				"          ShipDate as string,",
+				"          OrderStatus as string,",
+				"          ShipAddress as string,",
+				"          BillAddress as string,",
+				"          Quantity as string,",
+				"          Sales as string,",
+				"          CreationTime as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 cast(output(",
+				"          OrderID as integer,",
+				"          ProductID as integer,",
+				"          CustomerID as integer,",
+				"          SalesPersonID as integer,",
+				"          OrderDate as date 'yyyy-MM-dd',",
+				"          ShipDate as date 'yyyy-MM-dd',",
+				"          Quantity as integer",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 cast(output(",
+				"          CreationTime as date 'yyyy-MM-dd'",
+				"     ),",
+				"     errors: true) ~> cast2",
+				"cast2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          OrderID as integer,",
+				"          ProductID as integer,",
+				"          CustomerID as integer,",
+				"          SalesPersonID as integer,",
+				"          OrderDate as date,",
+				"          ShipDate as date,",
+				"          OrderStatus as string,",
+				"          ShipAddress as string,",
+				"          BillAddress as string,",
+				"          Quantity as integer,",
+				"          Sales as integer,",
+				"          CreationTime as binary",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          OrderID,",
+				"          ProductID,",
+				"          CustomerID,",
+				"          SalesPersonID,",
+				"          OrderDate,",
+				"          ShipDate,",
+				"          OrderStatus,",
+				"          ShipAddress,",
+				"          BillAddress,",
+				"          Quantity,",
+				"          Sales,",
+				"          CreationTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
